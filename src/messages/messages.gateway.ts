@@ -36,10 +36,10 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   }
 
   @SubscribeMessage('typing')
-  typing(@MessageBody('isTyping') isTyping: boolean, @ConnectedSocket() client: Socket) {
+  typing(@MessageBody('typingInst') typingInst:{ isTyping: boolean, room: string } , @ConnectedSocket() client: Socket) {
     const name = this.messagesService.getClientName(client.id);
-    this.logger.log(`Client connected: ${client.id}: Message ${isTyping}`);
-    client.broadcast.emit('typing', { name, isTyping });
+    this.logger.log(`Client connected: ${client.id}: Message ${typingInst}`);
+    client.broadcast.emit('typing', { name, typingInst });
   }
 
   @SubscribeMessage('joinRoom')
